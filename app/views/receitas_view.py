@@ -1,5 +1,6 @@
 from flask import Blueprint, request
 
+from app.serializers.receitas_serializer import ReceitaSerializer
 from app.services.receitas.receitas_manage_csv import listar_receitas, buscar_receitas, gravar_receita
 
 bp = Blueprint('receitas_route', __name__)
@@ -7,7 +8,9 @@ bp = Blueprint('receitas_route', __name__)
 
 @bp.route("/receitas")
 def lista_receitas():
-    return {"data": listar_receitas()}
+    receitas = listar_receitas()
+
+    return {"data": ReceitaSerializer.from_collection(receitas)}
 
 
 @bp.route("/receitas", methods=['POST'])

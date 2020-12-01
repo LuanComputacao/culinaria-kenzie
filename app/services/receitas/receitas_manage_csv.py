@@ -2,6 +2,8 @@ import csv
 
 from environs import Env
 
+from app.models.receitas_model import Receita
+
 env = Env()
 env.read_env()
 
@@ -11,7 +13,13 @@ fieldnames = ['id', 'nome_da_receita', 'descricao_da_receita']
 def listar_receitas():
     with open(env('RECEITAS_CSV')) as f:
         reader = csv.DictReader(f)
-        return [receita for receita in reader]
+        return [
+            Receita(
+                receita['nome_da_receita'],
+                receita['descricao_da_receita'],
+                receita['id']
+            )
+            for receita in reader]
 
 
 def buscar_receitas(nome):
